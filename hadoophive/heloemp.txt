@@ -1,0 +1,7 @@
+use varunmdb;
+
+select department_name, first_name from employee e join departments d on e.department_id=d.department_id;
+
+add jar hivemr/udf1.py;
+
+select transform(department_name) using 'python udf1.py' as leg from departments;

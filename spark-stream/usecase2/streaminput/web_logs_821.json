@@ -1,0 +1,10 @@
+{"timestamps":"2025-06-19 10:47:19","user_id":"user_017","action":"\/robots.txt","status_code":301}
+{"timestamps":"2025-06-19 10:47:19","user_id":"user_004","action":"\/home","status_code":403}
+{"timestamps":"2025-06-19 10:47:19","user_id":"user_016","action":"\/logs","status_code":400}
+{"timestamps":"2025-06-19 10:47:19","user_id":"user_015","action":"\/home","status_code":401}
+{"timestamps":"2025-06-19 10:47:19","user_id":"user_018","action":"\/logs","status_code":404}
+{"timestamps":"2025-06-19 10:47:19","user_id":"user_016","action":"\/checkout","status_code":301}
+{"timestamps":"2025-06-19 10:47:19","user_id":"user_004","action":"\/register","status_code":403}
+{"timestamps":"2025-06-19 10:47:19","user_id":"user_006","action":"\/login","status_code":403}
+{"timestamps":"2025-06-19 10:47:19","user_id":"user_007","action":"\/robots.txt","status_code":200}
+{"timestamps":"2025-06-19 10:47:19","user_id":"user_006","action":"\/home","status_code":400}

@@ -1,0 +1,160 @@
+hbase:001:0> create_namespace 'varuntcs';
+Took 0.5875 seconds     
+
+hbase:005:0> list_namespace;
+NAMESPACE                                                                                                                           
+Joshika_1011                                                                                                                        
+Tausif_db                                                                                                                           
+aditya_hbase                                                                                                                        
+amirtcs                                                                                                                             
+anandutcs                                                                                                                           
+arctcs                                                                                                                              
+arva_tcs                                                                                                                            
+arva_ycs                                                                                                                            
+aryan_tcs                                                                                                                           
+ayushjee_tcs                                                                                                                        
+bhargavi                                                                                                                            
+bhuvan_TCS                                                                                                                          
+burriakhilreddy                                                                                                                     
+cdac_javed                                                                                                                          
+chaitanya_tcs                                                                                                                       
+chaithra_hbase                                                                                                                      
+chethan_tcs                                                                                                                         
+danishn                                                                                                                             
+default                                                                                                                             
+dinesh_tcs                                                                                                                          
+gururaj_tcs                                                                                                                         
+harshadh25hbase                                                                                                                     
+hbase                                                                                                                               
+hrithik_tcs                                                                                                                         
+jyothi_hbase                                                                                                                        
+manidhar_tcs                                                                                                                        
+my_hbase                                                                                                                            
+my_namespace                                                                                                                        
+ndharshan_tcs                                                                                                                       
+nikhilneel                                                                                                                          
+nithish_tcs                                                                                                                         
+pragati_tcs                                                                                                                         
+prajwal_tcs                                                                                                                         
+punith                                                                                                                              
+rutuksha_tcs                                                                                                                        
+sairam                                                                                                                              
+santhosh_tcs                                                                                                                        
+shamithna75gedu                                                                                                                     
+shreyansh_tcs                                                                                                                       
+shubham_tcs                                                                                                                         
+shylesh_tcs                                                                                                                         
+skanda_hbase                                                                                                                        
+skanda_tcs                                                                                                                          
+srilekha_tcs                                                                                                                        
+subhajit_tcs                                                                                                                        
+sudharsan                                                                                                                           
+surekhatcs                                                                                                                          
+vaibhavtr                                                                                                                           
+vaishnavi_tcs                                                                                                                       
+varuntcs                                                                                                                            
+venugopal_ns                                                                                                                        
+vishva_tcs                                                                                                                          
+yadhu                                                                                                                               
+53 row(s)
+Took 0.0249 seconds       
+
+hbase:006:0> list_namespace_tables 'varuntcs';
+TABLE                                                                                                                               
+0 row(s)
+Took 0.0125 seconds                                                                                                                 
+=> []
+
+create  'varuntcs.employee', {NAME => 'emp_details', VERSIONS=>4}
+Created table varuntcs.employee
+Took 0.6399 seconds   
+
+
+hbase:010:0> describe 'varuntcs.employee';
+Table varuntcs.employee is ENABLED                                                                                                  
+varuntcs.employee                                                                                                                   
+COLUMN FAMILIES DESCRIPTION                                                                                                         
+{NAME => 'emp_details', BLOOMFILTER => 'ROW', IN_MEMORY => 'false', VERSIONS => '4', KEEP_DELETED_CELLS => 'FALSE', DATA_BLOCK_ENCOD
+ING => 'NONE', COMPRESSION => 'NONE', TTL => 'FOREVER', MIN_VERSIONS => '0', BLOCKCACHE => 'true', BLOCKSIZE => '65536', REPLICATION
+_SCOPE => '0'}                                                                                                                      
+
+1 row(s)
+Quota is disabled
+Took 0.1166 seconds    
+
+hbase:001:0> alter 'varuntcs.employee', {NAME=>'dept_details', TTL=>60}
+Updating all regions with the new schema...
+1/1 regions updated.
+Done.
+Took 2.3610 seconds   
+
+hbase:002:0> describe 'varuntcs.employee';
+Table varuntcs.employee is ENABLED                                                                                                  
+varuntcs.employee                                                                                                                   
+COLUMN FAMILIES DESCRIPTION                                                                                                         
+{NAME => 'dept_details', BLOOMFILTER => 'ROW', IN_MEMORY => 'false', VERSIONS => '1', KEEP_DELETED_CELLS => 'FALSE', DATA_BLOCK_ENCO
+DING => 'NONE', COMPRESSION => 'NONE', TTL => '60 SECONDS (1 MINUTE)', MIN_VERSIONS => '0', BLOCKCACHE => 'true', BLOCKSIZE => '6553
+6', REPLICATION_SCOPE => '0'}                                                                                                       
+
+{NAME => 'emp_details', BLOOMFILTER => 'ROW', IN_MEMORY => 'false', VERSIONS => '4', KEEP_DELETED_CELLS => 'FALSE', DATA_BLOCK_ENCOD
+ING => 'NONE', COMPRESSION => 'NONE', TTL => 'FOREVER', MIN_VERSIONS => '0', BLOCKCACHE => 'true', BLOCKSIZE => '65536', REPLICATION
+_SCOPE => '0'}                                                                                                                      
+
+2 row(s)
+Quota is disabled
+Took 0.0190 seconds  
+
+put 'varuntcs.employee','100', 'emp_details:first', 'Ram'
+Took 0.0059 seconds  
+
+hbase:005:0> scan 'varuntcs.employee'
+ROW                                COLUMN+CELL                                                                                      
+ 100                               column=emp_details:first, timestamp=2025-06-09T06:08:29.744, value=Ram                           
+1 row(s)
+Took 0.0188 seconds   
+
+hbase:006:0> put 'varuntcs.employee','100', 'emp_details:dname', 'Sports'
+Took 0.0050 seconds     
+
+hbase:007:0> scan 'varuntcs.employee'
+ROW                                        COLUMN+CELL                                                                                                               
+ 100                                       column=emp_details:dname, timestamp=2025-06-09T06:15:24.763, value=Sports                                                 
+ 100                                       column=emp_details:first, timestamp=2025-06-09T06:08:29.744, value=Ram                                                    
+1 row(s)
+
+hbase:017:0> put 'varuntcs.employee','100', 'dept_details:dname', 'Sports'
+Took 0.0692 seconds  
+
+hbase:022:0> scan 'varuntcs.employee';
+ROW                                        COLUMN+CELL                                                                                                               
+ 100                                       column=dept_details:dname, timestamp=2025-06-09T06:21:17.836, value=Sports                                                
+ 100                                       column=emp_details:dname, timestamp=2025-06-09T06:15:24.763, value=Sports                                                 
+ 100                                       column=emp_details:first, timestamp=2025-06-09T06:17:48.917, value=Nam                                                    
+1 row(s)
+Took 0.0050 seconds    
+
+-- after 1 min ( 60 sec TTL )
+
+hbase:023:0> scan 'varuntcs.employee';
+ROW                                        COLUMN+CELL                                                                                                               
+ 100                                       column=emp_details:dname, timestamp=2025-06-09T06:15:24.763, value=Sports                                                 
+ 100                                       column=emp_details:first, timestamp=2025-06-09T06:17:48.917, value=Nam                                                    
+1 row(s)
+Took 0.0046 seconds       
+
+hbase:008:0> get 'varuntcs.employee', '100';                                                                                                                   COLUMN                                   CELL                                                                                                                   emp_details:dname                       timestamp=2025-06-09T06:15:24.763, value=Sports                                                                        emp_details:first                       timestamp=2025-06-09T06:17:48.917, value=Nam                                                                           emp_details:salary                      timestamp=2025-06-09T06:33:55.537, value=20000                                                                        1 row(s)                                                                                                                                                       Took 0.0178 seconds 
+
+hbase:010:0> get 'varuntcs.employee', '100', {COLUMN=>'emp_details',VERSIONS=>1}                                                                               COLUMN                                   CELL                                                                                                                   emp_details:dname                       timestamp=2025-06-09T06:15:24.763, value=Sports                                                                        emp_details:first                       timestamp=2025-06-09T06:17:48.917, value=Nam                                                                           emp_details:salary                      timestamp=2025-06-09T06:33:55.537, value=20000                                                                        1 row(s)                                                                                                                                                       Took 0.0047 seconds
+
+-- TIME TRAVEL: VERSION=2 befere change, VERSION=4 changes before 4 changes from current or latest change
+
+hbase:016:0> get 'varuntcs.employee', '100', {COLUMN=>'emp_details', VERSIONS=>2}                                                                              COLUMN                                   CELL                                                                                                                   emp_details:dname                       timestamp=2025-06-09T06:15:24.763, value=Sports                                                                        emp_details:first                       timestamp=2025-06-09T06:49:01.969, value=Ram                                                                           emp_details:first                       timestamp=2025-06-09T06:17:48.917, value=Nam                                                                           emp_details:salary                      timestamp=2025-06-09T06:33:55.537, value=20000                                                                        1 row(s)                                                                                                                                                       Took 0.0067 seconds
+
+hbase:021:0> get 'varuntcs.employee', '100', {COLUMN=>'emp_details', VERSIONS=>4}                                                                              COLUMN                                   CELL                                                                                                                   emp_details:dname                       timestamp=2025-06-09T06:15:24.763, value=Sports                                                                        emp_details:first                       timestamp=2025-06-09T06:58:28.926, value=Yadhu                                                                         emp_details:first                       timestamp=2025-06-09T06:58:19.479, value=Anandu                                                                        emp_details:first                       timestamp=2025-06-09T06:58:12.359, value=Amir                                                                          emp_details:first                       timestamp=2025-06-09T06:58:05.433, value=Varun                                                                         emp_details:salary                      timestamp=2025-06-09T06:33:55.537, value=20000                                                                        1 row(s)                                                                                                                                            
+
+
+ delete 'varuntcs.employee',100,'emp_details:dname'
+ Took 0.0084 seconds 
+
+hbase:003:0> scan 'varuntcs.employee',{FILTER=>"RowFilter(=,'binaryprefix:1')"}                                                                                ROW                                      COLUMN+CELL                                                                                                            100                                     column=emp_details:first, timestamp=2025-06-09T06:58:28.926, value=Yadhu                                               100                                     column=emp_details:salary, timestamp=2025-06-09T06:33:55.537, value=20000                                             1 row(s)                                                                                                                                                       Took 0.0396 seconds 
+                                                                                             

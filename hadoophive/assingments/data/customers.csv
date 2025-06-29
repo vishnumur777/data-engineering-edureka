@@ -1,0 +1,51 @@
+customer_id,customer_name,email,state
+1,Customer_1,customer1@example.com,California
+2,Customer_2,customer2@example.com,Texas
+3,Customer_3,customer3@example.com,New York
+4,Customer_4,customer4@example.com,Florida
+5,Customer_5,customer5@example.com,Illinois
+6,Customer_6,customer6@example.com,California
+7,Customer_7,customer7@example.com,Texas
+8,Customer_8,customer8@example.com,New York
+9,Customer_9,customer9@example.com,Florida
+10,Customer_10,customer10@example.com,Illinois
+11,Customer_11,customer11@example.com,California
+12,Customer_12,customer12@example.com,Texas
+13,Customer_13,customer13@example.com,New York
+14,Customer_14,customer14@example.com,Florida
+15,Customer_15,customer15@example.com,Illinois
+16,Customer_16,customer16@example.com,California
+17,Customer_17,customer17@example.com,Texas
+18,Customer_18,customer18@example.com,New York
+19,Customer_19,customer19@example.com,Florida
+20,Customer_20,customer20@example.com,Illinois
+21,Customer_21,customer21@example.com,California
+22,Customer_22,customer22@example.com,Texas
+23,Customer_23,customer23@example.com,New York
+24,Customer_24,customer24@example.com,Florida
+25,Customer_25,customer25@example.com,Illinois
+26,Customer_26,customer26@example.com,California
+27,Customer_27,customer27@example.com,Texas
+28,Customer_28,customer28@example.com,New York
+29,Customer_29,customer29@example.com,Florida
+30,Customer_30,customer30@example.com,Illinois
+31,Customer_31,customer31@example.com,California
+32,Customer_32,customer32@example.com,Texas
+33,Customer_33,customer33@example.com,New York
+34,Customer_34,customer34@example.com,Florida
+35,Customer_35,customer35@example.com,Illinois
+36,Customer_36,customer36@example.com,California
+37,Customer_37,customer37@example.com,Texas
+38,Customer_38,customer38@example.com,New York
+39,Customer_39,customer39@example.com,Florida
+40,Customer_40,customer40@example.com,Illinois
+41,Customer_41,customer41@example.com,California
+42,Customer_42,customer42@example.com,Texas
+43,Customer_43,customer43@example.com,New York
+44,Customer_44,customer44@example.com,Florida
+45,Customer_45,customer45@example.com,Illinois
+46,Customer_46,customer46@example.com,California
+47,Customer_47,customer47@example.com,Texas
+48,Customer_48,customer48@example.com,New York
+49,Customer_49,customer49@example.com,Florida
+50,Customer_50,customer50@example.com,Illinois

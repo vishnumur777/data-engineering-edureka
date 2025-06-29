@@ -1,0 +1,2 @@
+hbase:001:0> create_namespace 'varuntcs';
+Took 0.5875 seconds     

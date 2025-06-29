@@ -1,0 +1,48 @@
+
+
+What Are Apache Logs?
+Apache logs are files the HTTP server populates with data. The files contain various request and response information, including server activity, errors, and other relevant data.
+Apache logs are divided into two main subtypes:
+?Access logs. These logs contain all server requests.
+?Error logs. These logs register server errors and issues with request processing.
+Server administrators, developers, and analysts use these logs to diagnose issues, monitor security, and analyze traffic patterns on a web server. Below is a detailed overview of each subtype.
+Apache Access Log
+Access logs provide details about who sends requests to the server and what data they request. Each request log contains details, such as the client's IP address, timestamp, the requested URL, HTTP response code, and response body size.
+The primary use for these logs is to analyze website traffic, discover potential security threats, and optimize web server performance. Monitoring Apache access logs provides insight into traffic patterns and helps navigate critical decisions regarding server security and optimization.
+
+159.110.199.16 - 48733 [18/Sep/2013:23:59:53 +0100] "GET /KBDOC-00182.html HTTP/1.0" 200 4602 "http://www.loudacre.com"  "Loudacre Mobile Browser Sorrento F10L"
+A single access log entry has detailed information about an HTTP request sent to the Apache server, including the client details, the request, and the server response.
+The exact format may vary depending on the Apache log format directives. Every access log entry contains similar elements:
+?159.110.199.16. The client's IP address. The example entry is the loopback address commonly used for local connections.
+?- 48733 . The placeholder for a remote and authenticated user, if present. The example entry has no specific information, and the dashes are placeholders.
+?[18/Sep/2013:23:59:53 +0100]. The request timestamp with the exact date, time, and timezone.
+?"GET /KBDOC-00182.html HTTP/1.0". The request method (GET), URL (/), and the HTTP protocol version (HTTP/1.1).
+?200. The HTTP status code the server returned. The example entry shows 200, indicating the request was successful.
+?4602 . The response size in bytes. The example value shows the server sent 3460 bytes back to the client.
+?"http://www.loudacre.com". The referrer field contains the web page that directs the client to the requested URL. The example value is unavailable.
+?"Loudacre Mobile Browser Sorrento F10L". The user-agent string that is sent from the client's web browser. 
+
+Some Apache log files are provided in weblogs folder.
+
+
+2.Knowledge based document(KBDOC). This is an index file for searching the KBDOC quickly.
+
+KBDOC-00293:Ronin S2 - Battery Life
+
+?KBDOC-00293  The Knowledge based document number to identify the KBDOC
+?Ronin S2 - Battery Life.  This is the description of the KBDOC
+
+KBlist.txt is provided for same.
+
+We want to analyse the logs for better services
+
+A)Create data frames for the both datasets 
+B)Clean the data
+C)Find the heaviest response sent to the client
+D)Find the no of requests send from various host machines.
+E)Find the host send the min and maximum requests
+F)Find the rush hour per day
+G)Find the user requested KBDOC with its description
+H)Find the most popular web page
+I)Find the different types of web pages requested by users
+J)Store the last output in hive

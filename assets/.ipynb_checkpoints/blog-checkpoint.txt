@@ -1,0 +1,71 @@
+Display Medium Articles on Your Personal Site Using the RSS Feed
+Do you want to show your medium stories on your site? Or do you want to integrate the Medium platform with your personal portfolio site dynamically?
+Muhammad Usman
+Muhammad Usman
+
+Follow
+4 min read
+·
+May 10, 2022
+2022
+
+Photo by Nick Fewings on Unsplash
+Yes, Medium supports the different ways to fetch the feed and get your Medium metadata.
+
+Why do I need to fetch a Medium feed?
+Medium is a third-party platform where you can publish your stories/articles. If you want to show these stories on your site or personal portfolio, you need to fetch the medium stories and display them on your website. It helps you to dynamically integrate the medium with your personal website. So in the future, if you publish any new article, it will automatically display on your site. You don’t need to do redundant work on both platforms.
+
+How can I integrate Medium with my personal portfolio?
+According to the official documentation of the Medium and the author ‘Cndro’ published his article ‘How to Get Data from Medium API’. Both the official documentation and article present the way how to get the medium data through API, which requires the authentication of the user through an integration token. Also, the Stackoverflow question ‘How to retrieve Medium stories for a user from the API?’ explains how to fetch the medium stories through the API.
+
+Our Goal
+The aim of this article is to fetch the medium feeds/data without user authentication and display them on your personal site.
+
+Connect Medium without Medium API
+Medium provides RSS feeds for user profiles, publications, and topic pages. Using an RSS feed URL, you can integrate the feed of your own profile or publication on Medium with your own website to show your latest stories.
+
+What is RSS?
+RSS (RDF Site Summary or Really Simple Syndication) is a web feed that allows users and applications to access updates to websites in a standardized, computer-readable format. Subscribing to RSS feeds can allow a user to keep track of different websites in a single news aggregator, which constantly monitors sites for new content, removing the need for the user to manually check them. Websites usually use RSS feeds to publish frequently updated information, such as blog entries, news headlines, episodes of audio and video series, or for distributing podcasts. An RSS document (called “feed”, “web feed”, or “channel”) includes full or summarized text, and metadata, like the publishing date and author’s name. RSS formats are specified using a generic XML file.
+
+Supported RSS feeds
+Medium supports different types of RSS feeds for users’ profiles, publications, topics, etc. You can get the details in the official documentation of RSS feeds on Medium. In this article, I am only using the profile page feed. RSS feed URL: https://medium.com/feed/@username
+
+
+Go into your medium profile and copy your username. My username is engrmuhammadusman108. So RSS feed URL becomes:
+
+https://medium.com/feed/@engrmuhammadusman108
+Go into the browser and put the above URL, and it will return an RSS document in XML format as shown in figure-1.
+
+
+Figure-1: RSS document in XML format
+Convert RSS to JSON
+The Rss2Json API allows developers to convert an RSS feed to JSON by submitting its URL. The items in a feed can be sorted by publication date, title, or author in ascending or descending order.
+
+Open the Rss2Json.com and put your RSS URL and click on the convert button. It will give you the output in JSON format as illustrated in figure-2. Copy the highlighted API call URL, which is used later to call the API from JavaScript code and get the JSON response.
+
+
+Figure-2: RSS to JSON
+Developing web page
+Let’s develop a simple HTML page using CSS and JavaScript. Call the API and get the JSON data to display it on your site. Here, I am creating a dummy application. You can use the same thing in your existing portfolio/personal site.
+
+The API URL of my profile is shown below. You can replace my username ‘engrmuhammadusman108’ with your username and put the same URL in the below code as well.
+
+API URL: https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@engrmuhammadusman108
+The below code have comment documentation. So the code itself explains everything.
+
+I used the sample code from W3Schools and modify the code accordingly.
+
+Similar to displaying the Medium article on your personal portfolio, you can also show “Stack Overflow” profile data (reputation, badges, questions, answers etc.). Please checkout my article “Displaying Stackoverflow reputation & badges on your portfolio”.
+
+Thank you for following my article. Have a nice day!
+
+Update on 27.05.2024:
+I created a npm package for medium named ‘medium-article-api’ and published it on npmjs.com. You can now directly use the package. Details will be found in my other article, ‘Enhance Your Website with Medium Content: Introducing medium-article-api’.
+Npm Package: https://www.npmjs.com/package/medium-article-api
+
+Update on 28.05.2024:
+The python library for medium is also published on pypi.org named ‘medium-article-py’ . You can follow the usage details in the following links.
+
+PyPi Library: https://pypi.org/project/medium-article-py/
+
+Github Repository: https://github.com/muhammad-usman-108/medium-article-py

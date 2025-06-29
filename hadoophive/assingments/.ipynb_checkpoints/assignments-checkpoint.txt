@@ -1,0 +1,657 @@
+                                                                    ASSIGNMENT-2
+                                                                    
+---------------------------------------------------------------------HDFS (HADOOP)-------------------------------------------------------
+
+1. Create raw data directory
+
+hdfs dfs -mkdir -p /user/varunm15t38hedu/telecom/data/raw/
+
+
+2. Upload only .csv files
+
+hdfs dfs -put data/*.csv /user/varunm15t38hedu/telecom/data/raw/
+
+3. Verify the upload with human-readable sizes
+
+hdfs dfs -ls -h /user/varunm15t38hedu/telecom/data/raw/
+Found 4 items
+-rw-r--r--   3 varunm15t38hedu varunm15t38hedu        323 2025-06-06 04:53 /user/varunm15t38hedu/telecom/data/raw/calls_feb.csv
+-rw-r--r--   3 varunm15t38hedu varunm15t38hedu        321 2025-06-06 04:53 /user/varunm15t38hedu/telecom/data/raw/calls_jan.csv
+-rw-r--r--   3 varunm15t38hedu varunm15t38hedu        325 2025-06-06 04:53 /user/varunm15t38hedu/telecom/data/raw/calls_mar.csv
+-rw-r--r--   3 varunm15t38hedu varunm15t38hedu        529 2025-06-06 04:54 /user/varunm15t38hedu/telecom/data/raw/readme.txt
+
+4. Display first 5 lines of calls_jan.csv
+
+hdfs dfs -cat /user/varunm15t38hedu/telecom/data/raw/calls_jan.csv | head -n 5
+
+caller_id,receiver_id,duration_sec,timestamp,location
+9876543210,9123456789,180,2025-01-15 08:30:00,Bangalore
+9123456789,9012345678,60,2025-01-15 09:00:00,Mumbai
+9988776655,9876543210,240,2025-01-16 11:45:00,Delhi
+9090909090,9123456789,30,2025-01-17 16:00:00,Chennai
+
+5. Move calls_mar.csv to archive
+
+hdfs dfs -mkdir -p /user/varunm15t38hedu/telecom/data/archive/
+hdfs dfs -mv /user/varunm15t38hedu/telecom/data/raw/calls_mar.csv /user/varunm15t38hedu/telecom/data/archive/
+
+6. Set replication factor for calls_feb.csv to 2
+
+hdfs dfs -setrep -w 2 /user/varunm15t38hedu/telecom/data/raw/calls_feb.csv
+
+Replication 2 set: /user/varunm15t38hedu/telecom/data/raw/calls_feb.csv
+Waiting for /user/varunm15t38hedu/telecom/data/raw/calls_feb.csv ...
+WARNING: the waiting time may be long for DECREASING the number of replications.
+. done
+
+7. Count total files and total bytes in raw folder
+
+hdfs dfs -count -h /user/varunm15t38hedu/telecom/data/raw/
+
+           1            3              1.1 K /user/varunm15t38hedu/telecom/data/raw
+           
+8. Delete only the HDFS version of calls_jan.csv
+
+hdfs dfs -rm /user/varunm15t38hedu/telecom/data/raw/calls_jan.csv
+Deleted /user/varunm15t38hedu/telecom/data/raw/calls_jan.csv
+
+9. Copy and rename readme.txt
+
+hdfs dfs -mkdir -p /user/varunm15t38hedu/telecom/docs/
+hdfs dfs -cp /user/varunm15t38hedu/telecom/data/raw/readme.txt /user/varunm15t38hedu/telecom/docs/data_description.txt
+
+10. Check HDFS disk usage
+
+hdfs dfs -du -h /user/varunm15t38hedu/telecom/
+
+1.1 K  3.1 K  /user/varunm15t38hedu/telecom/data
+529    1.5 K  /user/varunm15t38hedu/telecom/docs
+
+
+---------------------------------------------------------------HIVE---------------------------------------------------------------
+
+Tasks and Queries:
+
+1. Create External Tables
+
+create external table customers( customer_id int, customer_name string, email string, state string) row format delimited fields terminated by ',' location '/user/varunm15t38hedu/ecommerce/customers/' tblproperties('skip.header.line.count'='1');
+OK
+Time taken: 0.08 seconds
+
+
+create external table orders( order_id int, customer_id int, order_date date, order_status string) row format delimited fields terminated by ',' location '/user/varunm15t38hedu/ecommerce/orders/' tblproperties('skip.header.line.count'='1');
+OK
+Time taken: 0.063 seconds
+
+
+create external table order_items(order_item_id int, order_id int, product_id int, quantity int, item_price decimal(3,1)) row format delimited fields terminated by ',' location '/user/varunm15t38hedu/ecommerce/order_items/' tblproperties('skip.header.line.count'='1');
+OK
+Time taken: 0.069 seconds
+
+
+hive> create external table products(product_id int, product_name string, category string, price decimal(3,1)) row format delimited fields terminated by ',' location '/user/varunm15t38hedu/ecommerce/products/' tblproperties('skip.header.line.count'='1');
+OK
+Time taken: 0.081 seconds
+
+
+2. Load CSV data
+
+---bash
+
+ hdfs dfs -put customers.csv /user/varunm15t38hedu/ecommerce/customers/
+ 
+ hdfs dfs -put orders.csv /user/varunm15t38hedu/ecommerce/orders
+ 
+ hdfs dfs -put products.csv /user/varunm15t38hedu/ecommerce/products
+ 
+ hdfs dfs -put order_items.csv /user/varunm15t38hedu/ecommerce/order_items
+ 
+----
+
+3. Partitioning and Bucketing
+
+Partition Orders by Year:
+
+CREATE TABLE orders_partitioned (
+    order_id INT,
+    customer_id INT,
+    order_date DATE,
+    status STRING
+)
+PARTITIONED BY (year INT)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+insert overwrite table order_partitioned  partition(year) select order_id, customer_id, order_date, order_status, extract(year from order_date) as year from orders;
+
+
+Bucketing
+
+create table customers_buck (customer_id int,customer_name varchar(20),email varchar(30),state varchar(15)) clustered by(customer_id) sorted by(customer_id) into 4 buckets;
+
+
+insert overwrite table customers_buck select * from customers;
+
+
+desc formatted customers_buck;
+OK
+# col_name              data_type               comment             
+customer_id             int                                         
+customer_name           varchar(20)                                 
+email                   varchar(30)                                 
+state                   varchar(15)                                 
+                 
+# Detailed Table Information             
+Database:               varunmdb                 
+OwnerType:              USER                     
+Owner:                  varunm15t38hedu          
+CreateTime:             Fri Jun 06 06:17:51 UTC 2025     
+LastAccessTime:         UNKNOWN                  
+Retention:              0                        
+Location:               hdfs://master:9000/user/hive/warehouse/varunmdb.db/customers_buck        
+Table Type:             MANAGED_TABLE            
+Table Parameters:                
+        COLUMN_STATS_ACCURATE   {\"BASIC_STATS\":\"true\",\"COLUMN_STATS\":{\"customer_id\":\"true\",\"customer_name\":\"true\",\"email\":\"true\",\"state\":\"true\"}}
+        SORTBUCKETCOLSPREFIX    TRUE                
+        bucketing_version       2                   
+        numFiles                4                   
+        numRows                 50                  
+        rawDataSize             2253                
+        totalSize               2303                
+        transient_lastDdlTime   1749190769          
+                 
+# Storage Information            
+SerDe Library:          org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe       
+InputFormat:            org.apache.hadoop.mapred.TextInputFormat         
+OutputFormat:           org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat       
+Compressed:             No                       
+Num Buckets:            4                        
+Bucket Columns:         [customer_id]            
+Sort Columns:           [Order(col:customer_id, order:1)]        
+Storage Desc Params:             
+        serialization.format    1                   
+Time taken: 0.079 seconds, Fetched: 35 row(s)
+
+
+4. Analytical Queries
+
+Top 5 Customers by Total Spend
+
+SELECT c.customer_id, c.customer_name, SUM(oi.item_price*oi.quantity) AS total_spent FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY c.customer_id, c.customer_name
+ORDER BY total_spent DESC
+LIMIT 5;
+
+OK
+50      Customer_50     1670.0
+10      Customer_10     1220.0
+48      Customer_48     966.0
+9       Customer_9      952.0
+4       Customer_4      832.0
+Time taken: 186.589 seconds, Fetched: 5 row(s)
+
+
+Monthly Sales Summary (2023)
+
+SELECT MONTH(o.order_date) AS month, SUM(oi.item_price*oi.quantity) AS total_sales
+FROM orders o
+JOIN order_items oi ON o.order_id = oi.order_id
+WHERE YEAR(o.order_date) = 2023
+GROUP BY MONTH(o.order_date)
+ORDER BY month;
+
+
+OK
+1       6005.0
+2       12900.0
+3       985.0
+4       3030.0
+5       11465.0
+6       5395.0
+7       NULL
+Time taken: 171.562 seconds, Fetched: 7 row(s)
+
+
+Most Popular Products
+
+SELECT p.product_id, p.product_name, COUNT(*) AS order_count
+FROM products p
+JOIN order_items oi ON p.product_id = oi.product_id
+GROUP BY p.product_id, p.product_name
+ORDER BY order_count DESC
+LIMIT 5;
+
+OK
+134     Product_134     4
+133     Product_133     4
+132     Product_132     4
+169     Product_169     4
+130     Product_130     4
+Time taken: 207.41 seconds, Fetched: 5 row(s)
+
+Cumulative Sales by Product Category (Using Window Function)
+
+SELECT p.category, p.product_id, p.product_name, SUM(oi.item_price) OVER (PARTITION BY p.category) AS cumulative_sales FROM products p JOIN order_items oi ON p.product_id = oi.product_id;
+
+OK
+Clothing        107     Product_107     2532.0
+Clothing        107     Product_107     2532.0
+Clothing        107     Product_107     2532.0
+Clothing        152     Product_152     2532.0
+Clothing        172     Product_172     2532.0
+Clothing        172     Product_172     2532.0
+Clothing        172     Product_172     2532.0
+Clothing        172     Product_172     2532.0
+Clothing        152     Product_152     2532.0
+Clothing        152     Product_152     2532.0
+Clothing        152     Product_152     2532.0
+Clothing        122     Product_122     2532.0
+Clothing        102     Product_102     2532.0
+Clothing        122     Product_122     2532.0
+Clothing        122     Product_122     2532.0
+Clothing        122     Product_122     2532.0
+Clothing        192     Product_192     2532.0
+Clothing        192     Product_192     2532.0
+Clothing        192     Product_192     2532.0
+Clothing        192     Product_192     2532.0
+Clothing        102     Product_102     2532.0
+Clothing        102     Product_102     2532.0
+Clothing        102     Product_102     2532.0
+Clothing        167     Product_167     2532.0
+Clothing        147     Product_147     2532.0
+Clothing        147     Product_147     2532.0
+Clothing        147     Product_147     2532.0
+Clothing        147     Product_147     2532.0
+Clothing        142     Product_142     2532.0
+Clothing        142     Product_142     2532.0
+Clothing        142     Product_142     2532.0
+Clothing        142     Product_142     2532.0
+Clothing        167     Product_167     2532.0
+Clothing        167     Product_167     2532.0
+Clothing        167     Product_167     2532.0
+Clothing        107     Product_107     2532.0
+Clothing        187     Product_187     2532.0
+Clothing        197     Product_197     2532.0
+Clothing        197     Product_197     2532.0
+Clothing        197     Product_197     2532.0
+Clothing        197     Product_197     2532.0
+Clothing        127     Product_127     2532.0
+Clothing        127     Product_127     2532.0
+Clothing        127     Product_127     2532.0
+Clothing        117     Product_117     2532.0
+Clothing        117     Product_117     2532.0
+Clothing        112     Product_112     2532.0
+Clothing        182     Product_182     2532.0
+Clothing        182     Product_182     2532.0
+Clothing        182     Product_182     2532.0
+Clothing        182     Product_182     2532.0
+Clothing        117     Product_117     2532.0
+Clothing        127     Product_127     2532.0
+Clothing        132     Product_132     2532.0
+Clothing        132     Product_132     2532.0
+Clothing        132     Product_132     2532.0
+Clothing        132     Product_132     2532.0
+Clothing        137     Product_137     2532.0
+Clothing        137     Product_137     2532.0
+Clothing        137     Product_137     2532.0
+Clothing        112     Product_112     2532.0
+Clothing        112     Product_112     2532.0
+Clothing        112     Product_112     2532.0
+Clothing        117     Product_117     2532.0
+Clothing        137     Product_137     2532.0
+Clothing        157     Product_157     2532.0
+Clothing        157     Product_157     2532.0
+Clothing        157     Product_157     2532.0
+Clothing        162     Product_162     2532.0
+Clothing        162     Product_162     2532.0
+Clothing        162     Product_162     2532.0
+Clothing        162     Product_162     2532.0
+Clothing        157     Product_157     2532.0
+Clothing        177     Product_177     2532.0
+Clothing        177     Product_177     2532.0
+Clothing        177     Product_177     2532.0
+Clothing        177     Product_177     2532.0
+Clothing        187     Product_187     2532.0
+Clothing        187     Product_187     2532.0
+Clothing        187     Product_187     2532.0
+Toys    105     Product_105     2748.0
+Toys    190     Product_190     2748.0
+Toys    190     Product_190     2748.0
+Toys    190     Product_190     2748.0
+Toys    190     Product_190     2748.0
+Toys    185     Product_185     2748.0
+Toys    185     Product_185     2748.0
+Toys    185     Product_185     2748.0
+Toys    185     Product_185     2748.0
+Toys    165     Product_165     2748.0
+Toys    165     Product_165     2748.0
+Toys    165     Product_165     2748.0
+Toys    165     Product_165     2748.0
+Toys    140     Product_140     2748.0
+Toys    140     Product_140     2748.0
+Toys    140     Product_140     2748.0
+Toys    140     Product_140     2748.0
+Toys    135     Product_135     2748.0
+Toys    135     Product_135     2748.0
+Toys    135     Product_135     2748.0
+Toys    135     Product_135     2748.0
+Toys    195     Product_195     2748.0
+Toys    195     Product_195     2748.0
+Toys    195     Product_195     2748.0
+Toys    195     Product_195     2748.0
+Toys    110     Product_110     2748.0
+Toys    110     Product_110     2748.0
+Toys    110     Product_110     2748.0
+Toys    110     Product_110     2748.0
+Toys    105     Product_105     2748.0
+Toys    105     Product_105     2748.0
+Toys    105     Product_105     2748.0
+Toys    130     Product_130     2748.0
+Toys    130     Product_130     2748.0
+Toys    130     Product_130     2748.0
+Toys    130     Product_130     2748.0
+Toys    115     Product_115     2748.0
+Toys    115     Product_115     2748.0
+Toys    115     Product_115     2748.0
+Toys    160     Product_160     2748.0
+Toys    160     Product_160     2748.0
+Toys    160     Product_160     2748.0
+Toys    160     Product_160     2748.0
+Toys    155     Product_155     2748.0
+Toys    180     Product_180     2748.0
+Toys    180     Product_180     2748.0
+Toys    180     Product_180     2748.0
+Toys    180     Product_180     2748.0
+Toys    155     Product_155     2748.0
+Toys    155     Product_155     2748.0
+Toys    155     Product_155     2748.0
+Toys    115     Product_115     2748.0
+Toys    145     Product_145     2748.0
+Toys    145     Product_145     2748.0
+Toys    145     Product_145     2748.0
+Toys    120     Product_120     2748.0
+Toys    200     Product_200     2748.0
+Toys    200     Product_200     2748.0
+Toys    200     Product_200     2748.0
+Toys    200     Product_200     2748.0
+Toys    150     Product_150     2748.0
+Toys    150     Product_150     2748.0
+Toys    150     Product_150     2748.0
+Toys    150     Product_150     2748.0
+Toys    120     Product_120     2748.0
+Toys    120     Product_120     2748.0
+Toys    120     Product_120     2748.0
+Toys    145     Product_145     2748.0
+Toys    125     Product_125     2748.0
+Toys    125     Product_125     2748.0
+Toys    125     Product_125     2748.0
+Toys    125     Product_125     2748.0
+Toys    175     Product_175     2748.0
+Toys    175     Product_175     2748.0
+Toys    175     Product_175     2748.0
+Toys    175     Product_175     2748.0
+Toys    170     Product_170     2748.0
+Toys    170     Product_170     2748.0
+Toys    170     Product_170     2748.0
+Toys    170     Product_170     2748.0
+Books   153     Product_153     2604.0
+Books   108     Product_108     2604.0
+Books   158     Product_158     2604.0
+Books   158     Product_158     2604.0
+Books   163     Product_163     2604.0
+Books   163     Product_163     2604.0
+Books   163     Product_163     2604.0
+Books   163     Product_163     2604.0
+Books   158     Product_158     2604.0
+Books   158     Product_158     2604.0
+Books   108     Product_108     2604.0
+Books   108     Product_108     2604.0
+Books   108     Product_108     2604.0
+Books   148     Product_148     2604.0
+Books   148     Product_148     2604.0
+Books   148     Product_148     2604.0
+Books   133     Product_133     2604.0
+Books   133     Product_133     2604.0
+Books   133     Product_133     2604.0
+Books   133     Product_133     2604.0
+Books   148     Product_148     2604.0
+Books   113     Product_113     2604.0
+Books   113     Product_113     2604.0
+Books   113     Product_113     2604.0
+Books   113     Product_113     2604.0
+Books   123     Product_123     2604.0
+Books   123     Product_123     2604.0
+Books   123     Product_123     2604.0
+Books   178     Product_178     2604.0
+Books   178     Product_178     2604.0
+Books   178     Product_178     2604.0
+Books   178     Product_178     2604.0
+Books   123     Product_123     2604.0
+Books   153     Product_153     2604.0
+Books   153     Product_153     2604.0
+Books   153     Product_153     2604.0
+Books   168     Product_168     2604.0
+Books   168     Product_168     2604.0
+Books   168     Product_168     2604.0
+Books   168     Product_168     2604.0
+Books   143     Product_143     2604.0
+Books   143     Product_143     2604.0
+Books   143     Product_143     2604.0
+Books   143     Product_143     2604.0
+Books   193     Product_193     2604.0
+Books   193     Product_193     2604.0
+Books   193     Product_193     2604.0
+Books   193     Product_193     2604.0
+Books   103     Product_103     2604.0
+Books   173     Product_173     2604.0
+Books   173     Product_173     2604.0
+Books   173     Product_173     2604.0
+Books   173     Product_173     2604.0
+Books   138     Product_138     2604.0
+Books   138     Product_138     2604.0
+Books   138     Product_138     2604.0
+Books   138     Product_138     2604.0
+Books   103     Product_103     2604.0
+Books   103     Product_103     2604.0
+Books   103     Product_103     2604.0
+Books   118     Product_118     2604.0
+Books   118     Product_118     2604.0
+Books   118     Product_118     2604.0
+Books   118     Product_118     2604.0
+Books   198     Product_198     2604.0
+Books   198     Product_198     2604.0
+Books   198     Product_198     2604.0
+Books   198     Product_198     2604.0
+Books   188     Product_188     2604.0
+Books   188     Product_188     2604.0
+Books   188     Product_188     2604.0
+Books   188     Product_188     2604.0
+Books   183     Product_183     2604.0
+Books   183     Product_183     2604.0
+Books   183     Product_183     2604.0
+Books   183     Product_183     2604.0
+Books   128     Product_128     2604.0
+Books   128     Product_128     2604.0
+Books   128     Product_128     2604.0
+Books   128     Product_128     2604.0
+Electronics     156     Product_156     2460.0
+Electronics     106     Product_106     2460.0
+Electronics     106     Product_106     2460.0
+Electronics     106     Product_106     2460.0
+Electronics     106     Product_106     2460.0
+Electronics     101     Product_101     2460.0
+Electronics     101     Product_101     2460.0
+Electronics     101     Product_101     2460.0
+Electronics     101     Product_101     2460.0
+Electronics     146     Product_146     2460.0
+Electronics     156     Product_156     2460.0
+Electronics     156     Product_156     2460.0
+Electronics     156     Product_156     2460.0
+Electronics     181     Product_181     2460.0
+Electronics     181     Product_181     2460.0
+Electronics     181     Product_181     2460.0
+Electronics     126     Product_126     2460.0
+Electronics     126     Product_126     2460.0
+Electronics     126     Product_126     2460.0
+Electronics     126     Product_126     2460.0
+Electronics     121     Product_121     2460.0
+Electronics     121     Product_121     2460.0
+Electronics     121     Product_121     2460.0
+Electronics     121     Product_121     2460.0
+Electronics     181     Product_181     2460.0
+Electronics     191     Product_191     2460.0
+Electronics     191     Product_191     2460.0
+Electronics     191     Product_191     2460.0
+Electronics     116     Product_116     2460.0
+Electronics     116     Product_116     2460.0
+Electronics     116     Product_116     2460.0
+Electronics     116     Product_116     2460.0
+Electronics     191     Product_191     2460.0
+Electronics     146     Product_146     2460.0
+Electronics     146     Product_146     2460.0
+Electronics     146     Product_146     2460.0
+Electronics     196     Product_196     2460.0
+Electronics     196     Product_196     2460.0
+Electronics     196     Product_196     2460.0
+Electronics     196     Product_196     2460.0
+Electronics     166     Product_166     2460.0
+Electronics     166     Product_166     2460.0
+Electronics     166     Product_166     2460.0
+Electronics     166     Product_166     2460.0
+Electronics     161     Product_161     2460.0
+Electronics     161     Product_161     2460.0
+Electronics     161     Product_161     2460.0
+Electronics     161     Product_161     2460.0
+Electronics     151     Product_151     2460.0
+Electronics     151     Product_151     2460.0
+Electronics     151     Product_151     2460.0
+Electronics     151     Product_151     2460.0
+Electronics     141     Product_141     2460.0
+Electronics     141     Product_141     2460.0
+Electronics     141     Product_141     2460.0
+Electronics     141     Product_141     2460.0
+Electronics     111     Product_111     2460.0
+Electronics     111     Product_111     2460.0
+Electronics     111     Product_111     2460.0
+Electronics     111     Product_111     2460.0
+Electronics     186     Product_186     2460.0
+Electronics     186     Product_186     2460.0
+Electronics     186     Product_186     2460.0
+Electronics     186     Product_186     2460.0
+Electronics     176     Product_176     2460.0
+Electronics     176     Product_176     2460.0
+Electronics     176     Product_176     2460.0
+Electronics     176     Product_176     2460.0
+Electronics     171     Product_171     2460.0
+Electronics     171     Product_171     2460.0
+Electronics     171     Product_171     2460.0
+Electronics     171     Product_171     2460.0
+Electronics     136     Product_136     2460.0
+Electronics     136     Product_136     2460.0
+Electronics     136     Product_136     2460.0
+Electronics     136     Product_136     2460.0
+Electronics     131     Product_131     2460.0
+Electronics     131     Product_131     2460.0
+Electronics     131     Product_131     2460.0
+Electronics     131     Product_131     2460.0
+Home    129     Product_129     2676.0
+Home    129     Product_129     2676.0
+Home    129     Product_129     2676.0
+Home    159     Product_159     2676.0
+Home    159     Product_159     2676.0
+Home    159     Product_159     2676.0
+Home    159     Product_159     2676.0
+Home    189     Product_189     2676.0
+Home    174     Product_174     2676.0
+Home    174     Product_174     2676.0
+Home    174     Product_174     2676.0
+Home    174     Product_174     2676.0
+Home    179     Product_179     2676.0
+Home    179     Product_179     2676.0
+Home    179     Product_179     2676.0
+Home    179     Product_179     2676.0
+Home    124     Product_124     2676.0
+Home    124     Product_124     2676.0
+Home    124     Product_124     2676.0
+Home    124     Product_124     2676.0
+Home    189     Product_189     2676.0
+Home    189     Product_189     2676.0
+Home    189     Product_189     2676.0
+Home    194     Product_194     2676.0
+Home    194     Product_194     2676.0
+Home    194     Product_194     2676.0
+Home    194     Product_194     2676.0
+Home    104     Product_104     2676.0
+Home    104     Product_104     2676.0
+Home    104     Product_104     2676.0
+Home    104     Product_104     2676.0
+Home    114     Product_114     2676.0
+Home    114     Product_114     2676.0
+Home    114     Product_114     2676.0
+Home    114     Product_114     2676.0
+Home    129     Product_129     2676.0
+Home    144     Product_144     2676.0
+Home    144     Product_144     2676.0
+Home    144     Product_144     2676.0
+Home    144     Product_144     2676.0
+Home    139     Product_139     2676.0
+Home    139     Product_139     2676.0
+Home    139     Product_139     2676.0
+Home    139     Product_139     2676.0
+Home    149     Product_149     2676.0
+Home    184     Product_184     2676.0
+Home    184     Product_184     2676.0
+Home    184     Product_184     2676.0
+Home    184     Product_184     2676.0
+Home    149     Product_149     2676.0
+Home    149     Product_149     2676.0
+Home    149     Product_149     2676.0
+Home    119     Product_119     2676.0
+Home    119     Product_119     2676.0
+Home    169     Product_169     2676.0
+Home    169     Product_169     2676.0
+Home    154     Product_154     2676.0
+Home    164     Product_164     2676.0
+Home    164     Product_164     2676.0
+Home    164     Product_164     2676.0
+Home    119     Product_119     2676.0
+Home    119     Product_119     2676.0
+Home    169     Product_169     2676.0
+Home    109     Product_109     2676.0
+Home    169     Product_169     2676.0
+Home    154     Product_154     2676.0
+Home    154     Product_154     2676.0
+Home    154     Product_154     2676.0
+Home    164     Product_164     2676.0
+Home    199     Product_199     2676.0
+Home    199     Product_199     2676.0
+Home    199     Product_199     2676.0
+Home    134     Product_134     2676.0
+Home    134     Product_134     2676.0
+Home    134     Product_134     2676.0
+Home    134     Product_134     2676.0
+Home    199     Product_199     2676.0
+Home    109     Product_109     2676.0
+Home    109     Product_109     2676.0
+Home    109     Product_109     2676.0
+Time taken: 157.029 seconds, Fetched: 400 row(s)
+
+Cancelled Orders Percentage
+
+SELECT ROUND(COUNT(CASE WHEN order_status = 'Cancelled' THEN 1 END) * 100.0 / COUNT(*),2) cancelled_percentage FROM orders;
+
+OK
+33.50
+Time taken: 75.514 seconds, Fetched: 1 row(s)
+
+
+
+----------------------------------------------------------------COMPLETED-----------------------------------------------------------------------
+
+
+
+
+

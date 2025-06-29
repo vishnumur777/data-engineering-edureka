@@ -1,0 +1,92 @@
+hbase:001:0> version
+2.4.15, r35310fcd6b11a1d04d75eb7db2e592dd34e4d5b6, Thu Oct 13 11:42:20 PDT 2022
+Took 0.0002 seconds                                                                                                                                   
+hbase:002:0> status
+1 active master, 0 backup masters, 6 servers, 0 dead, 12.0000 average load
+Took 0.5612 seconds                                                                                                                                   
+hbase:005:0> status 'simple'
+active master:  master.cloudloka.com:16000 1749204876350
+0 backup masters
+6 live servers
+    dn1.cloudloka.com:16020 1749204877213
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=58, maxHeapMB=3876, numberOfStores=26, numberOfStorefiles=24, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=12, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=12, totalStaticIndexSizeKB=12, totalStaticBloomSizeKB=12, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn2.cloudloka.com:16020 1749204877253
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=25, maxHeapMB=3876, numberOfStores=27, numberOfStorefiles=25, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=12, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=12, totalStaticIndexSizeKB=12, totalStaticBloomSizeKB=12, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn3.cloudloka.com:16020 1749204877186
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=55, maxHeapMB=3876, numberOfStores=26, numberOfStorefiles=24, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=12, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=12, totalStaticIndexSizeKB=12, totalStaticBloomSizeKB=12, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn4.cloudloka.com:16020 1749204877275
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=69, maxHeapMB=3876, numberOfStores=25, numberOfStorefiles=24, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=16, readRequestsCount=3485, filteredReadRequestsCount=0, writeRequestsCount=314, rootIndexSizeKB=16, totalStaticIndexSizeKB=13, totalStaticBloomSizeKB=11, totalCompactingKVs=1278, currentCompactedKVs=1278, compactionProgressPct=1.0, coprocessors=[MultiRowMutationEndpoint]
+    dn5.cloudloka.com:16020 1749204885865
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=56, maxHeapMB=3876, numberOfStores=21, numberOfStorefiles=10, storefileUncompressedSizeMB=5, storefileSizeMB=5, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=5, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=5, totalStaticIndexSizeKB=5, totalStaticBloomSizeKB=5, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn6.cloudloka.com:16020 1749204885736
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=79, maxHeapMB=7785, numberOfStores=23, numberOfStorefiles=8, storefileUncompressedSizeMB=4, storefileSizeMB=4, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=4, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=4, totalStaticIndexSizeKB=4, totalStaticBloomSizeKB=4, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+0 dead servers
+Aggregate load: 0, regions: 72
+Took 0.0240 seconds     
+
+hbase:001:0> version
+2.4.15, r35310fcd6b11a1d04d75eb7db2e592dd34e4d5b6, Thu Oct 13 11:42:20 PDT 2022
+Took 0.0002 seconds                                                                                                                                   
+hbase:002:0> status
+1 active master, 0 backup masters, 6 servers, 0 dead, 12.0000 average load
+Took 0.5612 seconds                                                                                                                                   
+hbase:003:0> write simple
+Traceback (most recent call last):
+NameError (undefined local variable or method `simple' for #<HBaseReceiver:0x21e484b>)
+hbase:004:0> status simple
+Traceback (most recent call last):
+NameError (undefined local variable or method `simple' for #<HBaseReceiver:0x21e484b>)
+hbase:005:0> status 'simple'
+active master:  master.cloudloka.com:16000 1749204876350
+0 backup masters
+6 live servers
+    dn1.cloudloka.com:16020 1749204877213
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=58, maxHeapMB=3876, numberOfStores=26, numberOfStorefiles=24, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=12, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=12, totalStaticIndexSizeKB=12, totalStaticBloomSizeKB=12, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn2.cloudloka.com:16020 1749204877253
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=25, maxHeapMB=3876, numberOfStores=27, numberOfStorefiles=25, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=12, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=12, totalStaticIndexSizeKB=12, totalStaticBloomSizeKB=12, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn3.cloudloka.com:16020 1749204877186
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=55, maxHeapMB=3876, numberOfStores=26, numberOfStorefiles=24, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=12, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=12, totalStaticIndexSizeKB=12, totalStaticBloomSizeKB=12, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn4.cloudloka.com:16020 1749204877275
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=69, maxHeapMB=3876, numberOfStores=25, numberOfStorefiles=24, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=16, readRequestsCount=3485, filteredReadRequestsCount=0, writeRequestsCount=314, rootIndexSizeKB=16, totalStaticIndexSizeKB=13, totalStaticBloomSizeKB=11, totalCompactingKVs=1278, currentCompactedKVs=1278, compactionProgressPct=1.0, coprocessors=[MultiRowMutationEndpoint]
+    dn5.cloudloka.com:16020 1749204885865
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=56, maxHeapMB=3876, numberOfStores=21, numberOfStorefiles=10, storefileUncompressedSizeMB=5, storefileSizeMB=5, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=5, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=5, totalStaticIndexSizeKB=5, totalStaticBloomSizeKB=5, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn6.cloudloka.com:16020 1749204885736
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=79, maxHeapMB=7785, numberOfStores=23, numberOfStorefiles=8, storefileUncompressedSizeMB=4, storefileSizeMB=4, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=4, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=4, totalStaticIndexSizeKB=4, totalStaticBloomSizeKB=4, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+0 dead servers
+Aggregate load: 0, regions: 72
+Took 0.0240 seconds     
+
+
+hbase:001:0> version
+2.4.15, r35310fcd6b11a1d04d75eb7db2e592dd34e4d5b6, Thu Oct 13 11:42:20 PDT 2022
+Took 0.0002 seconds                                                                                                                                   
+hbase:002:0> status
+1 active master, 0 backup masters, 6 servers, 0 dead, 12.0000 average load
+Took 0.5612 seconds                                                                                                                                   
+hbase:003:0> write simple
+Traceback (most recent call last):
+NameError (undefined local variable or method `simple' for #<HBaseReceiver:0x21e484b>)
+hbase:004:0> status simple
+Traceback (most recent call last):
+NameError (undefined local variable or method `simple' for #<HBaseReceiver:0x21e484b>)
+hbase:005:0> status 'simple'
+active master:  master.cloudloka.com:16000 1749204876350
+0 backup masters
+6 live servers
+    dn1.cloudloka.com:16020 1749204877213
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=58, maxHeapMB=3876, numberOfStores=26, numberOfStorefiles=24, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=12, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=12, totalStaticIndexSizeKB=12, totalStaticBloomSizeKB=12, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn2.cloudloka.com:16020 1749204877253
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=25, maxHeapMB=3876, numberOfStores=27, numberOfStorefiles=25, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=12, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=12, totalStaticIndexSizeKB=12, totalStaticBloomSizeKB=12, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn3.cloudloka.com:16020 1749204877186
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=55, maxHeapMB=3876, numberOfStores=26, numberOfStorefiles=24, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=12, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=12, totalStaticIndexSizeKB=12, totalStaticBloomSizeKB=12, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn4.cloudloka.com:16020 1749204877275
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=69, maxHeapMB=3876, numberOfStores=25, numberOfStorefiles=24, storefileUncompressedSizeMB=12, storefileSizeMB=12, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=16, readRequestsCount=3485, filteredReadRequestsCount=0, writeRequestsCount=314, rootIndexSizeKB=16, totalStaticIndexSizeKB=13, totalStaticBloomSizeKB=11, totalCompactingKVs=1278, currentCompactedKVs=1278, compactionProgressPct=1.0, coprocessors=[MultiRowMutationEndpoint]
+    dn5.cloudloka.com:16020 1749204885865
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=56, maxHeapMB=3876, numberOfStores=21, numberOfStorefiles=10, storefileUncompressedSizeMB=5, storefileSizeMB=5, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=5, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=5, totalStaticIndexSizeKB=5, totalStaticBloomSizeKB=5, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+    dn6.cloudloka.com:16020 1749204885736
+        requestsPerSecond=0.0, numberOfOnlineRegions=12, usedHeapMB=79, maxHeapMB=7785, numberOfStores=23, numberOfStorefiles=8, storefileUncompressedSizeMB=4, storefileSizeMB=4, compressionRatio=1.0000, memstoreSizeMB=0, storefileIndexSizeKB=4, readRequestsCount=0, filteredReadRequestsCount=0, writeRequestsCount=0, rootIndexSizeKB=4, totalStaticIndexSizeKB=4, totalStaticBloomSizeKB=4, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[]
+0 dead servers
+Aggregate load: 0, regions: 72
+Took 0.0240 seconds     
+
+

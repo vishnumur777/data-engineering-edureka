@@ -1,0 +1,12 @@
+{"CreatedTime": "2019-02-05 10:02:00", "Type": "BUY", "Amount": 800, "BrokerCode": "ABC"}
+{"CreatedTime": "2019-02-05 10:02:00", "Type": "BUY", "Amount": 500, "BrokerCode": "ABX"}
+{"CreatedTime": "2019-02-05 10:03:00", "Type": "SELL", "Amount": 600, "BrokerCode": "ABC"}
+
+{"CreatedTime": "2019-02-05 10:10:00", "Type": "BUY", "Amount": 900, "BrokerCode": "ABC"}
+
+{"CreatedTime": "2019-02-05 10:07:00", "Type": "SELL", "Amount": 600, "BrokerCode": "ABX"}
+
+{"CreatedTime": "2019-02-05 10:14:00", "Type": "SELL", "Amount": 300, "BrokerCode": "ABX"}
+{"CreatedTime": "2019-02-05 10:15:00", "Type": "SELL", "Amount": 300, "BrokerCode": "ABX"}
+{"CreatedTime": "2019-02-05 10:14:00", "Type": "SELL", "Amount": 300, "BrokerCode": "ABC"}
+{"CreatedTime": "2019-02-05 10:15:00", "Type": "SELL", "Amount": 300, "BrokerCode": "ABX"}

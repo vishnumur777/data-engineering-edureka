@@ -1,0 +1,16 @@
+Performance Tuning Summary 
+
+This document outlines the performance optimization techniques applied to improve the efficiency and scalability of the PySpark-based ETL and analytical workflow on insurance claim data. 
+
+1. Saving the cleaned data to parquet format, giving alias to aggregated results
+
+2. Caching
+used 'cleaned_df.cache()' on cleaned_df which is reused across multiple queries.
+
+3. Column Pruning : using '.select' and '.filter' on the dataframe
+
+
+
+
+
+

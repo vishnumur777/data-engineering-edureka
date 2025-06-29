@@ -1,0 +1,54 @@
++-------------------------+
+|  CSV File (demo.csv)   |
+|  [Real-time Source]     |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| Kafka Producer (Python)|
+| Reads CSV row-by-row   |
+| Sends to topic         |
+| 'assessment2_aj'       |
++-----------+-------------+
+            |
+            v
++-------------------------+
+|      Kafka Topic        |
+|   'assessment2_aj'      |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| PySpark ReadStream      |
+| Reads from Kafka        |
+| value = raw CSV string  |
++-----------+-------------+
+            |
+            v
++-------------------------+
+|   Parse & Split         |
+| split(col("value"), ",")|
+| withColumn(...)         |
++-----------+-------------+
+            |
+            v
++-------------------------+
+|    Type Casting         |
+| cast("customer_id", Int)|
+| cast("amount", Double)  |
+| cast("timestamp", Time) |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| Filter / Transform      |
+| amount > 400 & status OK|
+| groupBy + windowing     |
++-----------+-------------+
+            |
+            v
++-------------------------+
+|      Output Sink        |
+| -> HBase (happybase)    |
+| -> Console / File       |
++-------------------------+

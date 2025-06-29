@@ -1,0 +1,8 @@
+[{"department_id":10,"dname":"Administration","managerId":200,"locationId":1700},
+{"department_id":20,"dname":"Marketing","managerId":201,"locationId":1800},
+{"department_id":30,"dname":"Purchasing","managerId":114,"locationId":1700},
+{"department_id":40,"dname":"Human Resources","managerId":203,"locationId":2400},
+{"department_id":50,"dname":"Shipping","managerId":121,"locationId":1500},
+{"department_id":60,"dname":"IT","managerId":103,"locationId":1400},
+{"department_id":70,"dname":"Public Relations","managerId":204,"locationId":2700},
+{"department_id":80,"dname":"Sales","managerId":145,"locationId":2500}]

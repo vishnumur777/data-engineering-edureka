@@ -1,0 +1,10 @@
+{"timestamps":"2025-06-17 05:11:25.915157","user_id":567507321141018484,"action":"\/checkout","status_code":401}
+{"timestamps":"2025-06-17 05:11:25.915178","user_id":554894155003539496,"action":"\/login","status_code":429}
+{"timestamps":"2025-06-17 05:11:25.915182","user_id":97590980201780692,"action":"\/robots.txt","status_code":200}
+{"timestamps":"2025-06-17 05:11:25.915185","user_id":706143809297616186,"action":"\/robots.txt","status_code":100}
+{"timestamps":"2025-06-17 05:11:25.915189","user_id":323140592218602354,"action":"\/logs","status_code":400}
+{"timestamps":"2025-06-17 05:11:25.915193","user_id":700054066751045777,"action":"\/logs","status_code":404}
+{"timestamps":"2025-06-17 05:11:25.915196","user_id":603232424717937331,"action":"\/home","status_code":403}
+{"timestamps":"2025-06-17 05:11:25.915199","user_id":577447287054197296,"action":"\/register","status_code":301}
+{"timestamps":"2025-06-17 05:11:25.915202","user_id":201195047762585066,"action":"\/pay","status_code":503}
+{"timestamps":"2025-06-17 05:11:25.915205","user_id":879971101223395523,"action":"\/logs","status_code":201}
